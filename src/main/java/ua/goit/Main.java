@@ -75,30 +75,20 @@ public class Main {
             StringBuilder allLines = new StringBuilder();
             String[] allWords;
             int counter = 0;
-            Map<String, Integer> wordsWithCount = new TreeMap<>();/*(new Comparator<Integer>() {
+            Map<String, Integer> wordsWithCount = new TreeMap<>();
+
+/*          Map<Integer, String> countWithWords = new TreeMap<>(new Comparator<Integer>() {
                 @Override
                 public int compare(Integer o1, Integer o2) {
                     if (o1 < o2) {
-                        return -1;
-                    } else if (o1 > o2) {
                         return 1;
+                    } else if (o1 > o2) {
+                        return -1;
                     }
                     return 0;
                 }
 
             });*/
-            Map<Integer, String> countWithWords = new TreeMap<>(new Comparator<Integer>() {
-                @Override
-                public int compare(Integer o1, Integer o2) {
-                    if (o1 < o2) {
-                        return 1;
-                    } else if (o1 > o2) {
-                        return -1;
-                    }
-                    return 0;
-                }
-
-            });
 
             while (line != null) {
                 allLines.append(line + "\n");
@@ -112,13 +102,16 @@ public class Main {
                         counter++;
                     }
                 }
-                countWithWords.put((Integer) counter, allWords[i]);
+                wordsWithCount.put(allWords[i], (Integer) counter);
                 counter = 0;
 
             }
+            MyComparator comp=new MyComparator(wordsWithCount);
+            Map<String,Integer> newSortedMap = new TreeMap(comp);
+            newSortedMap.putAll(wordsWithCount);
 
-            for (Map.Entry<Integer, String> item: countWithWords.entrySet()) {
-                System.out.println(item.getValue() + " " + item.getKey());
+            for (Map.Entry<String, Integer> item: newSortedMap.entrySet()) {
+                System.out.println(item.getKey() + " " + item.getValue());
             }
 
         } catch (FileNotFoundException e) {
