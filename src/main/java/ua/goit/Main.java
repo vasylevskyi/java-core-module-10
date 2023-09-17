@@ -7,12 +7,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) {
         getValidPhoneNumbers("phoneNumbers.txt");
         getUsersInJSON("users.txt");
+        getWordsSortedByCount("words.txt");
 
     }
 
@@ -56,6 +61,53 @@ public class Main {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String json = gson.toJson(usersArrayList);
             System.out.println(json);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getWordsSortedByCount(String fileName) {
+        try (FileReader fileReader = new FileReader(fileName)) {
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
+            StringBuilder allLines = new StringBuilder();
+            String[] allWords;
+            int counter = 0;
+            Map<String, Integer> wordsWithCount = new TreeMap<>();/*(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    if (o1 < o2) {
+                        return -1;
+                    } else if (o1 > o2) {
+                        return 1;
+                    }
+                    return 0;
+                }
+
+            });*/
+
+            while (line != null) {
+                allLines.append(line + "\n");
+                line = bufferedReader.readLine();
+            }
+            allWords = allLines.toString().split("\\s+");
+
+            for (int i = 0; i < allWords.length; i++) {
+                for (int j = 0; j < allWords.length; j++) {
+                    if (allWords[i].equals(allWords[j])) {
+                        counter++;
+                    }
+                }
+                wordsWithCount.put(allWords[i], (Integer) counter);
+                counter = 0;
+
+            }
+            for (Map.Entry<String, Integer> item: wordsWithCount.entrySet()) {
+                System.out.println(item.getKey() + " " + item.getValue());
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

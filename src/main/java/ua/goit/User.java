@@ -2,9 +2,9 @@ package ua.goit;
 
 public class User {
     private String name;
-    private int age;
+    private Integer age;
 
-    public User(String name, int age) {
+    public User(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
