@@ -87,6 +87,18 @@ public class Main {
                 }
 
             });*/
+            Map<Integer, String> countWithWords = new TreeMap<>(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    if (o1 < o2) {
+                        return 1;
+                    } else if (o1 > o2) {
+                        return -1;
+                    }
+                    return 0;
+                }
+
+            });
 
             while (line != null) {
                 allLines.append(line + "\n");
@@ -100,12 +112,13 @@ public class Main {
                         counter++;
                     }
                 }
-                wordsWithCount.put(allWords[i], (Integer) counter);
+                countWithWords.put((Integer) counter, allWords[i]);
                 counter = 0;
 
             }
-            for (Map.Entry<String, Integer> item: wordsWithCount.entrySet()) {
-                System.out.println(item.getKey() + " " + item.getValue());
+
+            for (Map.Entry<Integer, String> item: countWithWords.entrySet()) {
+                System.out.println(item.getValue() + " " + item.getKey());
             }
 
         } catch (FileNotFoundException e) {
